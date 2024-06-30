@@ -1,4 +1,4 @@
-package org.springframework.beans.factory;
+package org.springframework.beans.factory.test.ioc;
 
 /**
  * @author abstractMoonAstronaut
