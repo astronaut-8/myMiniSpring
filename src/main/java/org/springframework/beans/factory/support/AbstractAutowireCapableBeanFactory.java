@@ -1,10 +1,11 @@
 package org.springframework.beans.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 
 import org.springframework.beans.factory.config.BeanDefinition;
-import java.lang.reflect.Method;
+
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/6/30
@@ -37,13 +38,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
             for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()){
                 String name = propertyValue.getName();
-                String value = propertyValue.getValue();
+                Object value = propertyValue.getValue();
 
-                //通过属性的set方法设置属性
-                Class<?> type = beanClass.getDeclaredField(name).getType();//获取 属性字段的类型
-                String methodName = "set" + name.substring(0,1).toUpperCase() + name.substring(1); // 拼接set函数的name
-                Method method = beanClass.getDeclaredMethod(methodName,new Class[]{type});
-                method.invoke(bean,new Object[]{value});
+//                //通过属性的set方法设置属性
+//                Class<?> type = beanClass.getDeclaredField(name).getType();//获取 属性字段的类型
+//                String methodName = "set" + name.substring(0,1).toUpperCase() + name.substring(1); // 拼接set函数的name
+//                Method method = beanClass.getDeclaredMethod(methodName,new Class[]{type});
+//                method.invoke(bean,new Object[]{value});
+                BeanUtil.setFieldValue(bean,name,value);
 
             }
         }catch (Exception e){
