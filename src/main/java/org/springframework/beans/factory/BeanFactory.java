@@ -1,6 +1,8 @@
 package org.springframework.beans.factory;
 
 
+import org.springframework.beans.BeansException;
+
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/6/30
