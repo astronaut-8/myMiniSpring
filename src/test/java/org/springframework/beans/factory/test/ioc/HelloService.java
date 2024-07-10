@@ -7,8 +7,29 @@ package org.springframework.beans.factory.test.ioc;
  */
 public class HelloService {
 
-    public String sayHello() {
-        System.out.println("hello from function");
-        return "hello from return";
+  private String foo;
+  private String bar;
+
+    public String getFoo() {
+        return foo;
+    }
+
+    public void setFoo(String foo) {
+        this.foo = foo;
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public void setBar(String bar) {
+        this.bar = bar;
+    }
+
+    @Override
+    public String toString() {
+        return "HelloService{"+
+                "foo = " + foo+
+                ",bar " + bar+"}";
     }
 }
