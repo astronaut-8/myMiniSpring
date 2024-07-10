@@ -5,6 +5,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanReference;
 
 /**
  * @author abstractMoonAstronaut
@@ -39,6 +40,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()){
                 String name = propertyValue.getName();
                 Object value = propertyValue.getValue();
+                if (value instanceof BeanReference){
+                    //当bean依赖这个value当时候，先实例化value
+                    BeanReference beanReference = (BeanReference) value;
+                    value = getBean(beanReference.getBeanName());
+                }
 
 //                //通过属性的set方法设置属性
 //                Class<?> type = beanClass.getDeclaredField(name).getType();//获取 属性字段的类型

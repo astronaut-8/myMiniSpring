@@ -8,6 +8,7 @@ package org.springframework.beans.factory.test.ioc.bean;
 public class Person {
     private String name;
     private int age;
+    private Car car;
 
     public Person() {
     }
@@ -15,6 +16,12 @@ public class Person {
     public Person(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Person(String name, int age, Car car) {
+        this.name = name;
+        this.age = age;
+        this.car = car;
     }
 
     /**
@@ -49,7 +56,25 @@ public class Person {
         this.age = age;
     }
 
+
+
+    /**
+     * 获取
+     * @return car
+     */
+    public Car getCar() {
+        return car;
+    }
+
+    /**
+     * 设置
+     * @param car
+     */
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
     public String toString() {
-        return "Person{name = " + name + ", age = " + age + "}";
+        return "Person{name = " + name + ", age = " + age + ", car = " + car + "}";
     }
 }
