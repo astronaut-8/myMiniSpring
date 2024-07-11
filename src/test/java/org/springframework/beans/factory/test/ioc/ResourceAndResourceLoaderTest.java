@@ -21,7 +21,7 @@ public class ResourceAndResourceLoaderTest {
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 
         //加载classpath下的资源
-        Resource resource = resourceLoader.getResource("classpath:hello.txt");
+        Resource resource = resourceLoader.getResource("classpath:spring.xml");
         InputStream inputStream = resource.getInputStream();
         String context = IoUtil.readUtf8(inputStream);
         System.out.println("classpath ---> " + context);
