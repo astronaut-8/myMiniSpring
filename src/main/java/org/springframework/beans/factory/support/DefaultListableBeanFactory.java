@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author abstractMoonAstronaut
@@ -14,6 +15,7 @@ import java.util.Map;
  */
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry
 , ConfigurableListableBeanFactory {
+
     private Map<String,BeanDefinition> beanDefinitionMap = new HashMap<>();
     @Override
     public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
@@ -50,5 +52,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             }
         });
         return result;
+    }
+
+    @Override
+    public String[] getBeanDefinitionNames() {
+        Set<String> beanNames = beanDefinitionMap.keySet();
+        return beanNames.toArray(new String[0]);
     }
 }

@@ -18,4 +18,6 @@ public interface ListableBeanFactory {
      * @throws BeansException 异常
      */
     <T> Map<String,T> getBeanOfType(Class<T> type) throws BeansException;
+
+    String[] getBeanDefinitionNames();
 }
