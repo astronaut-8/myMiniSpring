@@ -17,4 +17,14 @@ public interface BeanFactory {
      * @throws BeansException bean不存在的时候返回exception
      */
     Object getBean(String name) throws BeansException;
+
+    /**
+     * 根据名称和类型查找Bean
+     * @param name name
+     * @param requireType 类型
+     * @return bean
+     * @param <T> 泛型
+     * @throws BeansException 不存在
+     */
+    <T> T getBean(String name , Class<T> requireType) throws BeansException;
 }
