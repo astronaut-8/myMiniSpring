@@ -19,6 +19,7 @@ public class XmlFileDefineBeanTest {
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
         try {
             beanDefinitionReader.loadBeanDefinitions("classpath:spring.xml");
+
         }catch (BeansException e){
             throw new BeansException("error",e);
         }

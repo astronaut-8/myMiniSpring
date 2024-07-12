@@ -99,7 +99,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                                 String  nameAttribute = property.getAttribute(NAME_ATTRIBUTE);
                                 String valueAttribute = property.getAttribute(VALUE_ATTRIBUTE);
                                 String refAttribute = property.getAttribute(REF_ATTRIBUTE);
-
                                 if (StrUtil.isEmpty(nameAttribute)){
                                     throw new BeansException("the name attribute cannot be null or empty");
                                 }
@@ -109,7 +108,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                                     value = new BeanReference(refAttribute);
                                 }
                                 PropertyValue propertyValue = new PropertyValue(nameAttribute,value);
+
                                 beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
+
                             }
                         }
                     }
@@ -117,6 +118,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     if (getRegistry().containsBeanDefinition(beanName)){
                         throw new BeansException("Duplicate beanName " + beanName + "is not allowed");
                     }
+
                     getRegistry().registerBeanDefinition(beanName,beanDefinition);
 
                 }

@@ -8,4 +8,7 @@ import org.springframework.beans.factory.HierarchicalBeanFactory;
  * {@code @msg} reserved
  */
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory,SingletonBeanRegistry {
+    //configurable 代表这个接口要有可以修改的能力
+
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 }
