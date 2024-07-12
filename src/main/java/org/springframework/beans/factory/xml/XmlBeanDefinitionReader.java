@@ -2,6 +2,7 @@ package org.springframework.beans.factory.xml;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -16,6 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -37,6 +39,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         super(registry);
     }
 
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
+        super(registry, resourceLoader);
+    }
+
     @Override
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try{
@@ -46,7 +52,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             }finally {
                 inputStream.close();
             }
-        }catch (Exception e){
+        }catch (IOException e){
             throw new BeansException("IOException parsing XML document from "+ resource,e);
         }
     }
@@ -56,7 +62,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         Resource resource = resourceLoader.getResource(location);
         loadBeanDefinitions(resource);
     }
-    protected void doLoadBeanDefinitions(InputStream inputStream) throws Exception {
+    protected void doLoadBeanDefinitions(InputStream inputStream) {
         Document document = XmlUtil.readXML(inputStream); // 将xml解析成document结构
         Element root = document.getDocumentElement();//这代表最大的bean标签
         NodeList childNodes = root.getChildNodes(); // 每一个元素代表这个标签下的子标签
@@ -69,8 +75,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     String name = bean.getAttribute(NAME_ATTRIBUTE);
                     String className = bean.getAttribute(CLASS_ATTRIBUTE);
 
-                    Class<?> clazz = Class.forName(className); //将名字转换为class类
-
+                    Class<?> clazz = null; //将名字转换为class类
+                    try{
+                        clazz = Class.forName(className);
+                    }catch (ClassNotFoundException e){
+                        throw new BeansException("Cannot find class - " + className);
+                    }
                     //id的优先级大于name
                     String beanName = StrUtil.isNotEmpty(id) ? id : name;
                     if (StrUtil.isEmpty(beanName)){
@@ -90,6 +100,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                                 String valueAttribute = property.getAttribute(VALUE_ATTRIBUTE);
                                 String refAttribute = property.getAttribute(REF_ATTRIBUTE);
 
+                                if (StrUtil.isEmpty(nameAttribute)){
+                                    throw new BeansException("the name attribute cannot be null or empty");
+                                }
+
                                 Object value = valueAttribute;
                                 if (StrUtil.isNotEmpty(refAttribute)){
                                     value = new BeanReference(refAttribute);
@@ -100,6 +114,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                         }
                     }
 
+                    if (getRegistry().containsBeanDefinition(beanName)){
+                        throw new BeansException("Duplicate beanName " + beanName + "is not allowed");
+                    }
                     getRegistry().registerBeanDefinition(beanName,beanDefinition);
 
                 }
