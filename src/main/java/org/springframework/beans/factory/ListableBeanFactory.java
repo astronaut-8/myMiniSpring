@@ -9,7 +9,7 @@ import java.util.Map;
  * {@code @date} 2024/7/12
  * {@code @msg} listable 可以列出的  可以列出bean
  */
-public interface ListableBeanFactory {
+public interface ListableBeanFactory extends BeanFactory {
     /**
      * 返回指定类型的所有实例
      * @param type class

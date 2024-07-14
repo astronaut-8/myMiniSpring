@@ -15,6 +15,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 public class CustomBeanFactoryPostProcessor implements BeanFactoryPostProcessor{
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        System.out.println("postProcessBeanFactory");
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("person");
 
         PropertyValues propertyValues = beanDefinition.getPropertyValues();
