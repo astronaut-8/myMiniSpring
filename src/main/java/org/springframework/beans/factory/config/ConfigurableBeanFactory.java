@@ -11,4 +11,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory,Singlet
     //configurable 代表这个接口要有可以修改的能力
 
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
+
+    void destroySingletons();
 }

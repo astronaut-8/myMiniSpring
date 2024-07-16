@@ -1,11 +1,14 @@
 package org.springframework.beans.factory.test.ioc.bean;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/7/10
  * {@code @msg} reserved
  */
-public class Person {
+public class Person implements InitializingBean, DisposableBean {
     private String name;
     private int age;
     private Car car;
@@ -76,5 +79,21 @@ public class Person {
 
     public String toString() {
         return "Person{name = " + name + ", age = " + age + ", car = " + car + "}";
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("afterProperties");
+    }
+    public void customInitMethod(){
+        System.out.println("customInitMethod");
+    }
+    public void customDestroyMethod(){
+        System.out.println("customDestroyMethod");
     }
 }
