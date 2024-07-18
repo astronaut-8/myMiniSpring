@@ -9,6 +9,12 @@ import org.springframework.beans.PropertyValues;
  */
 public class BeanDefinition {
     //beanDefinition保存bean的信息，包括class类型、方法构造参数、是否为单例等
+
+    private static String SCOPE_SINGLETON = "singleton";
+    private static String SCOPE_PROTOTYPE = "prototype";
+    private String scope = SCOPE_SINGLETON;
+    private boolean singleton = true;
+    private boolean prototype = false;
     private Class beanClass;
 
     private PropertyValues propertyValues;
@@ -54,5 +60,19 @@ public class BeanDefinition {
 
     public void setDestroyMethodName(String destroyMethodName) {
         this.destroyMethodName = destroyMethodName;
+    }
+
+    public void setScope(String scope){
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public boolean isSingleton() {
+        return this.singleton;
+    }
+
+    public boolean isPrototype() {
+        return this.prototype;
     }
 }

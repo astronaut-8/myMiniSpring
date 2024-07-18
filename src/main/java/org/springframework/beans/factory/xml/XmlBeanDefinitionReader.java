@@ -36,6 +36,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public static final String REF_ATTRIBUTE = "ref";
     public static final String INIT_METHOD_ATTRIBUTE = "init-method";
     public static final String DESTROY_METHOD_ATTRIBUTE = "destroy-method";
+    public static  final String SCOPE_ATTRIBUTE = "scope";
 
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
@@ -82,6 +83,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String initMethodName = bean.attributeValue(INIT_METHOD_ATTRIBUTE);
             String destroyMethodName = bean.attributeValue(DESTROY_METHOD_ATTRIBUTE);
 
+            String beanScope = bean.attributeValue(SCOPE_ATTRIBUTE);
             Class<?> clazz; //将名字转换为class类
             try {
                 clazz = Class.forName(className);
@@ -97,7 +99,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             BeanDefinition beanDefinition = new BeanDefinition(clazz); //创建bean定义信息
             beanDefinition.setInitMethodName(initMethodName);
             beanDefinition.setDestroyMethodName(destroyMethodName);
-
+            if (StrUtil.isNotEmpty(beanScope)){
+                beanDefinition.setScope(beanScope);
+            }
             //填充xml中bean定义的属性
             List<Element> propertyList = bean.elements(PROPERTY_ELEMENT);
 
