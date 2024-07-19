@@ -8,7 +8,6 @@ import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author abstractMoonAstronaut
@@ -22,7 +21,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     public Object getSingleton(String name) {
         return singletonObjects.get(name);
     }
-    protected void addSingleton(String beanName, Object singletonObject) {
+    public void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
     }
     public void registerDisposableBean(String beanName,DisposableBean bean){
