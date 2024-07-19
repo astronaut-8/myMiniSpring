@@ -2,9 +2,9 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans">
 
-    <bean class="org.springframework.beans.factory.test.ioc.common.event.ContextClosedEventListener"/>
-    <bean class="org.springframework.beans.factory.test.ioc.common.event.ContextRefreshedEventListener"/>
-    <bean class="org.springframework.beans.factory.test.ioc.common.event.CustomEventListener"/>
+    <bean class="org.springframework.test.common.event.ContextClosedEventListener"/>
+    <bean class="org.springframework.test.common.event.ContextRefreshedEventListener"/>
+    <bean class="org.springframework.test.common.event.CustomEventListener"/>
 
 
 

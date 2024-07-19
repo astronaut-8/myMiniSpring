@@ -3,17 +3,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans">
 
 
-    <bean id="person" class="org.springframework.beans.factory.test.ioc.bean.Person">
+    <bean id="person" class="org.springframework.test.bean.Person">
         <property name="name" value="derek"/>
         <property name="car" ref="car"/>
     </bean>
 
-    <bean id="car" class="org.springframework.beans.factory.test.ioc.bean.Car">
+    <bean id="car" class="org.springframework.test.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
 
 
-    <bean class="org.springframework.beans.factory.test.ioc.common.CustomBeanPostProcessor"/>
-    <bean class="org.springframework.beans.factory.test.ioc.common.CustomBeanFactoryPostProcessor"/>
-    <bean id = "helloService" class="org.springframework.beans.factory.test.ioc.service.HelloService"/>
+    <bean class="org.springframework.test.common.CustomBeanPostProcessor"/>
+    <bean class="org.springframework.test.common.CustomBeanFactoryPostProcessor"/>
+    <bean id = "helloService" class="org.springframework.test.service.HelloService"/>
 </beans>

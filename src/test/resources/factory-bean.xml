@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans">
 
 
-   <bean id="car" class="org.springframework.beans.factory.test.ioc.common.CarFactoryBean">
+   <bean id="car" class="org.springframework.test.common.CarFactoryBean">
        <property name="brand" value="audi"/>
    </bean>
 </beans>

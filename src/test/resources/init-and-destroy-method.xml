@@ -2,12 +2,12 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans">
 
-    <bean id="person" class="org.springframework.beans.factory.test.ioc.bean.Person" init-method="customInitMethod" destroy-method="customDestroyMethod">
+    <bean id="person" class="org.springframework.test.bean.Person" init-method="customInitMethod" destroy-method="customDestroyMethod">
         <property name="name" value="derek"/>
         <property name="car" ref="car"/>
     </bean>
 
-    <bean id="car" class="org.springframework.beans.factory.test.ioc.bean.Car">
+    <bean id="car" class="org.springframework.test.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
 
