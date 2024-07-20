@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/7/20
- * {@code @msg} reserved
+ * {@code @msg} 反射方法调用
  */
 public class ReflectiveMethodInvocation implements MethodInvocation {
-    private final Object target;
-    private final Method method;
-    private final Object[] arguments;
+    protected final Object target;
+    protected final Method method;
+    protected final Object[] arguments;
 
     public ReflectiveMethodInvocation(Object target, Method method, Object[] arguments) {
         this.target = target;

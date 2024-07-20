@@ -21,6 +21,7 @@ public class JdkDynamicAopProxy implements AopProxy , InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        //判断是否需要代理
         if (advised.getMethodMatcher().matches(method,advised.getTargetSource().getTarget().getClass())){
             //代理方法
             MethodInterceptor methodInterceptor = advised.getMethodInterceptor();
