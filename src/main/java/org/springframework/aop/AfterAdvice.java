@@ -9,6 +9,6 @@ import java.lang.reflect.Method;
  * {@code @date} 2024/7/20
  * {@code @msg} reserved
  */
-public interface BeforeAdvice extends Advice {
-    void before(Method method,Object[] args,Object target) throws Throwable;
+public interface AfterAdvice extends Advice {
+    void after(Method method, Object[] args, Object target) throws Throwable;
 }
