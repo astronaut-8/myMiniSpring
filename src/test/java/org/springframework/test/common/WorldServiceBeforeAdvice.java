@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * {@code @date} 2024/7/20
  * {@code @msg} reserved
  */
-public class WorldServiceBeforeAdvice implements BeforeAdvice {
+public class WorldServiceBeforeAdvice implements MethodBeforeAdvice{
     @Override
     public void before(Method method, Object[] args, Object target) throws Throwable {
         System.out.println("before advice");
