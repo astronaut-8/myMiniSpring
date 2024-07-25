@@ -85,14 +85,14 @@ public class DynamicProxyTest {
         MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
         advisor.setAdvice(methodInterceptor);
 
-        ClassFilter classFilter = advisor.getPoint().getClassFilter();
+        ClassFilter classFilter = advisor.getPointCut().getClassFilter();
         if (classFilter.matches(worldService.getClass())){
             AdvisedSupport advisedSupport = new AdvisedSupport();
 
             TargetSource targetSource = new TargetSource(worldService);
             advisedSupport.setTargetSource(targetSource);
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-            advisedSupport.setMethodMatcher(advisor.getPoint().getMethodMatcher());
+            advisedSupport.setMethodMatcher(advisor.getPointCut().getMethodMatcher());
 
             WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
             proxy.explode();

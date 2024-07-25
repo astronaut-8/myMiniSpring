@@ -6,5 +6,5 @@ package org.springframework.aop;
  * {@code @msg} reserved
  */
 public interface PointcutAdvisor extends Advisor{
-    Pointcut getPoint();
+    Pointcut getPointCut();
 }
