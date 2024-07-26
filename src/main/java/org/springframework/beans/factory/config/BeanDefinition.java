@@ -2,6 +2,8 @@ package org.springframework.beans.factory.config;
 
 import org.springframework.beans.PropertyValues;
 
+import java.util.Objects;
+
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/6/30
@@ -74,5 +76,22 @@ public class BeanDefinition {
 
     public boolean isPrototype() {
         return this.prototype;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(beanClass);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        BeanDefinition that = (BeanDefinition) o;
+        return beanClass.equals(that.beanClass);
     }
 }

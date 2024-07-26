@@ -1,10 +1,13 @@
 package org.springframework.test.bean;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/7/10
  * {@code @msg} reserved
  */
+@Component
 public class Car {
     private String brand;
 
