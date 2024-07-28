@@ -1,6 +1,7 @@
 package org.springframework.beans.factory.config;
 
 import org.springframework.beans.factory.HierarchicalBeanFactory;
+import org.springframework.util.StringValueResolver;
 
 /**
  * @author abstractMoonAstronaut
@@ -13,4 +14,9 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory,Singlet
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 
     void destroySingletons();
+
+    void addEmbeddedValueResolver(StringValueResolver valueResolver); // 嵌入式值 解析器 解析嵌入式的值
+
+    String resolveEmbeddedValue(String value);
+
 }

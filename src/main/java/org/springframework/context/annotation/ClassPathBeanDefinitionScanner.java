@@ -1,6 +1,7 @@
 package org.springframework.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Set;
  * {@code @msg} reserved
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider{
+    private static final String AUTOWIRED_PROCESSOR_BEAN_NAME = "org.springframework.context.annotation.internalAutowiredAnnotationProcessor";
     private BeanDefinitionRegistry registry;
 
     public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry) {
@@ -33,6 +35,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
             }
 
         }
+
+        registry.registerBeanDefinition(AUTOWIRED_PROCESSOR_BEAN_NAME,new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String determineBeanName(BeanDefinition beanDefinition) {

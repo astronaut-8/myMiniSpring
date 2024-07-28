@@ -1,0 +1,55 @@
+package org.springframework.beans.factory.annotation;
+
+import cn.hutool.core.bean.BeanUtil;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+
+import java.lang.reflect.Field;
+
+/**
+ * @author abstractMoonAstronaut
+ * {@code @date} 2024/7/28
+ * {@code @msg} reserved
+ */
+public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareBeanPostProcessor, BeanFactoryAware {
+    private ConfigurableListableBeanFactory beanFactory;
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = (ConfigurableListableBeanFactory) beanFactory;
+    }
+
+    @Override
+    public Object postProcessorBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return null;
+    }
+
+    @Override
+    public Object postProcessorAfterInitialization(Object bean, String beanName) throws BeansException {
+        return null;
+    }
+
+    @Override
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        return null;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        Class<?> clazz = bean.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            Value valueAnnotation = field.getAnnotation(Value.class);
+            if (valueAnnotation != null){
+                String value = valueAnnotation.value();
+                value = beanFactory.resolveEmbeddedValue(value);
+                BeanUtil.setFieldValue(bean,field.getName(),value);
+            }
+        }
+        return pvs;
+    }
+}

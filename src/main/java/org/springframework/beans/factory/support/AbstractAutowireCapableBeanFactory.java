@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -53,6 +54,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         try{
             bean = createBeanInstance(beanDefinition);
+
+            //允许BeanPostProcessor修改属性
+            applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName,bean,beanDefinition);
 
             //为bean填充信息
             applyPropertyValues(beanName,bean,beanDefinition);
@@ -178,6 +182,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
            }
            initMethod.invoke(bean);
        }
+    }
+
+    protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName,Object bean , BeanDefinition beanDefinition){
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()){
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
+                PropertyValues pvs = ((InstantiationAwareBeanPostProcessor)beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(),bean,beanName);
+                if (pvs != null){
+                    for (PropertyValue propertyValue : pvs.getPropertyValues()){
+                        beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringValueResolver;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -28,6 +29,9 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
         //属性值替换占位符
         processProperties(beanFactory,properties);
 
+        //往容器中添加 嵌入式字符解析器
+        StringValueResolver valueResolver = new PlaceholderResolvingStringValueResolver(properties);
+        beanFactory.addEmbeddedValueResolver(valueResolver);
     }
 
     private void processProperties(ConfigurableListableBeanFactory beanFactory, Properties properties) throws BeansException{
@@ -43,19 +47,23 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
         for (PropertyValue propertyValue : propertyValues.getPropertyValues()){
             Object value = propertyValue.getValue();
             if (value instanceof String){
-                //TODO 仅仅简单支持一个占位符格式
-                String strVal = (String) value;
-                StringBuffer buf = new StringBuffer(strVal);
-                int startIndex = buf.indexOf(PLACEHOLDER_PREFIX);
-                int endIndex = buf.indexOf(PLACEHOLDER_SUFFIX);
-                if (startIndex != -1 && endIndex != -1 && startIndex < endIndex){
-                    String proKey = strVal.substring(startIndex + 2 , endIndex);
-                    String proVal = properties.getProperty(proKey); //取出配置文件中的值
-                    buf.replace(startIndex,endIndex+1,proVal);
-                    propertyValues.addPropertyValue(new PropertyValue(propertyValue.getName(),buf.toString()));
-                }
+                value = resolvePlaceholder((String) value,properties);
+                propertyValues.addPropertyValue(new PropertyValue(propertyValue.getName(),value));
             }
         }
+    }
+    private String resolvePlaceholder(String value , Properties properties) {
+        //TODO 仅仅简单支持一个占位符格式
+        String strVal = (String) value;
+        StringBuffer buf = new StringBuffer(strVal);
+        int startIndex = buf.indexOf(PLACEHOLDER_PREFIX);
+        int endIndex = buf.indexOf(PLACEHOLDER_SUFFIX);
+        if (startIndex != -1 && endIndex != -1 && startIndex < endIndex){
+            String proKey = strVal.substring(startIndex + 2 , endIndex);
+            String proVal = properties.getProperty(proKey); //取出配置文件中的值
+            buf.replace(startIndex,endIndex+1,proVal);
+        }
+        return buf.toString();
     }
 
     private Properties loadProperties(){
@@ -72,5 +80,19 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+
+    private class PlaceholderResolvingStringValueResolver implements StringValueResolver {
+        private final Properties properties;
+
+        public PlaceholderResolvingStringValueResolver(Properties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        public String resolveStringValue(String strVal) throws BeansException{
+            return PropertyPlaceholderConfigurer.this.resolvePlaceholder(strVal,properties);
+        }
     }
 }
