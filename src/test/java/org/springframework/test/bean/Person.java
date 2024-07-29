@@ -2,15 +2,19 @@ package org.springframework.test.bean;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/7/10
  * {@code @msg} reserved
  */
+@Component
 public class Person implements InitializingBean, DisposableBean {
     private String name;
     private int age;
+    @Autowired
     private Car car;
 
     public Person() {

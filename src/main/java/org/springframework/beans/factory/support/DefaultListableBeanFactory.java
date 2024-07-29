@@ -4,9 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author abstractMoonAstronaut
@@ -64,5 +62,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
                 getBean(beanName);
             }
         });
+    }
+
+    @Override
+    public <T> T getBean(Class<T> requiredType) throws BeansException {
+        List<String> beanNames = new ArrayList<>();
+        for (Map.Entry<String,BeanDefinition> entry : beanDefinitionMap.entrySet()){
+            Class beanClass = entry.getValue().getBeanClass();
+            if (requiredType.isAssignableFrom(beanClass)){
+                beanNames.add(entry.getKey());
+            }
+        }
+        if (beanNames.size() == 1){
+            return getBean(beanNames.get(0),requiredType);
+        }
+
+        throw new BeansException(requiredType + " expected single bean but found " + beanNames.size() + "beanNames");
     }
 }
