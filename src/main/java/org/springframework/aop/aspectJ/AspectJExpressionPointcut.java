@@ -17,6 +17,13 @@ import java.util.Set;
  * {@code @date} 2024/7/19
  * {@code @msg} reserved
  */
+
+/**
+ * AspectJ是一种切点表达式，就是切点(继承Pointcut) 用来，描述织入点，那么其基本作用
+ * 就是以aspectJ的方式去解析这一切点匹配规则(这里是简单利用execution语句)
+ * 作为一个匹配原则，其暴露出去的就是方法和类的匹配器，用来让外界去比匹配切点规则
+ * 实现两个接口，可以做class和method的匹配
+ */
 public class AspectJExpressionPointcut implements Pointcut , ClassFilter , MethodMatcher {
     private final PointcutExpression pointcutExpression;
 
