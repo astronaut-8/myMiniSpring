@@ -7,6 +7,11 @@ package org.springframework.test.service;
  */
 public class WorldServiceWithExceptionImpl implements WorldService{
     @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
     public void explode() {
         System.out.println("boom!");
         throw new RuntimeException();

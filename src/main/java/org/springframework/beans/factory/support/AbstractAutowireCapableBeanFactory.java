@@ -23,6 +23,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition) throws BeansException {
+        //InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation
         Object bean = resolveBeforeInstantiation(beanName,beanDefinition);
         if (bean != null){
             return bean;
@@ -55,7 +56,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         try{
             bean = createBeanInstance(beanDefinition);
 
-            //允许BeanPostProcessor修改属性
+            //实例化bean之后执行
+            //InstantiationAwareBeanPostProcessor#postProcessorAfterInstantiation
+            boolean continueWithPropertyPopulation = applyBeanPostProcessorsAfterInstantiation(beanName,bean);
+            if (!continueWithPropertyPopulation){
+                return bean;
+            }
+            //允许BeanPostProcessor修改属性 注解内容翻译到beanDefinition中去
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName,bean,beanDefinition);
 
             //为bean填充信息
@@ -75,6 +82,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return bean;
     }
 
+    private boolean applyBeanPostProcessorsAfterInstantiation(String beanName, Object bean) {
+        boolean continueWithPropertyPopulation = true;
+          for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()){
+              if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                  if (!((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessorAfterInstantiation(bean,beanName)){
+                      continueWithPropertyPopulation = false;
+                      break;
+                  }
+              }
+          }
+          return continueWithPropertyPopulation;
+    }
+
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
         //只有单利bean会执行销毁方法
         if (beanDefinition.isSingleton()) {
@@ -92,7 +112,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()){
                 String name = propertyValue.getName();
                 Object value = propertyValue.getValue();
-
                 if (value instanceof BeanReference){
                     //当bean依赖这个value当时候，先实例化value
                     BeanReference beanReference = (BeanReference) value;
