@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
  * {@code @date} 2024/7/29
  * {@code @msg} reserved
  */
-public class StringNumberConverterFactory implements ConverterFactory<String ,Number> {
+public class StringToNumberConverterFactory implements ConverterFactory<String ,Number> {
     @Override
     public <T extends Number> Converter<String, T> getConverter(Class<T> targetType) {
         return new StringToNumber<T>(targetType);

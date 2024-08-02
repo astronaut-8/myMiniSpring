@@ -5,9 +5,13 @@ import java.util.Set;
 /**
  * @author abstractMoonAstronaut
  * {@code @date} 2024/7/29
- * {@code @msg} reserved
+ * {@code @msg} 通用的转换器
  */
 public interface GenericConverter {
+    /**
+     * ConvertiblePair 转换组合 由原始转换class和目标转换class组成
+     * 一个通用转换器 是否可以被一个需求使用 其"能力"由ConvertiblePair表述
+     */
     Set<ConvertiblePair> getConvertibleTypes();
     Object convert(Object source,Class sourceType,Class targetType);
 
@@ -43,7 +47,14 @@ public interface GenericConverter {
 
         @Override
         public int hashCode() {
-            return super.hashCode();
+            //31 作为乘数有助于生成更均匀的哈希分布。其选择基于实用经验和性能考虑
+            return this.sourceType.hashCode() * 31 + this.targetType.hashCode();
+        }
+
+
+        @Override
+        public String toString() {
+            return "sourceType -> " + sourceType.getName() + "   " + "targetType -> " + targetType.getName();
         }
     }
 }
