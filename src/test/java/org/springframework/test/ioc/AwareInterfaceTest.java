@@ -2,7 +2,7 @@ package org.springframework.test.ioc;
 
 import org.junit.Test;
 import org.springframework.test.service.HelloService;
-import org.springframework.context.suport.ClassPathXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author abstractMoonAstronaut

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * {@code @date} 2024/7/10
  * {@code @msg} reserved
  */
-@Component
+
 public class Person implements InitializingBean, DisposableBean {
     private String name;
     private int age;

@@ -1,4 +1,4 @@
-package org.springframework.context.suport;
+package org.springframework.context.support;
 
 
 import org.springframework.beans.BeansException;
@@ -12,6 +12,7 @@ import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ import java.util.Map;
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
     public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
+    public static final String CONVERSION_SERVICE_BEAN_NAME = "conversionService";
     private ApplicationEventMulticaster applicationEventMulticaster;
     @Override
     public Object getBean(String name) throws BeansException {
@@ -72,11 +74,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         //注册事件监听者
         registerListener();
 
-        //提前实例化单例bean
-        beanFactory.preInstantiateSingleton();
+
+        //注册类型转换器和提前实例化单例bean
+        finishBeanFactoryInitialization(beanFactory);
 
         //发布容器刷新完成事件
         finishRefresh();
+    }
+
+    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+        if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME)){
+            Object conversionService = beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME);
+            if (conversionService instanceof ConversionService){
+                beanFactory.setConversionService( (ConversionService) conversionService);
+            }
+        }
+        //提前实例化单例bean
+        beanFactory.preInstantiateSingleton();
     }
 
     protected void finishRefresh() {
@@ -143,5 +157,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     @Override
     public void publishEvent(ApplicationEvent event) {
         applicationEventMulticaster.multicasterEvent(event);
+    }
+
+    @Override
+    public boolean containsBean(String name) {
+        return getBeanFactory().containsBean(name);
     }
 }

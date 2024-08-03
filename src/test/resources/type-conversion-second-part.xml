@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:context="http://www.springframework.org/schema/context">
+
+
+    <bean class="org.springframework.beans.factory.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:car.properties"/>
+    </bean>
+    <bean id="car" class="org.springframework.test.bean.Car">
+        <property name="price" value="100000"/>
+        <property name="produceDate" value="2021-01-01"/>
+    </bean>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactory">
+        <property name="converters" ref="converters"/>
+    </bean>
+
+    <bean id="converters" class="org.springframework.test.common.ConverterFactoryBean"/>
+    <context:component-scan base-package="org.springframework.test.bean"/>
+</beans>

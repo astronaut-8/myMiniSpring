@@ -28,4 +28,6 @@ public interface BeanFactory {
      */
     <T> T getBean(String name , Class<T> requireType) throws BeansException;
     <T> T getBean(Class<T> requiredType) throws BeansException;
+
+    boolean containsBean(String name);
 }

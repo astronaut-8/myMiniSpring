@@ -3,7 +3,7 @@ package org.springframework.test.ioc;
 import org.junit.Test;
 import org.springframework.test.bean.Car;
 import org.springframework.test.bean.Person;
-import org.springframework.context.suport.ClassPathXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author abstractMoonAstronaut
