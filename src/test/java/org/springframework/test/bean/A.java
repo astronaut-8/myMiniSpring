@@ -15,4 +15,8 @@ public class A {
     public void setB(B b) {
         this.b = b;
     }
+
+    public void fun(){
+        System.out.println("this is a function");
+    }
 }
