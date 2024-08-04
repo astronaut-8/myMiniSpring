@@ -15,11 +15,16 @@ import java.util.Map;
  * {@code @msg} reserved
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
-    private Map<String,Object> singletonObjects = new HashMap<>();
+    private Map<String,Object> singletonObjects = new HashMap<>(); //一级缓存
+    protected Map<String,Object> earlySingletonObjects = new HashMap<>(); //二级缓存
     private final Map<String, DisposableBean> disposableBeans = new HashMap<>();
     @Override
-    public Object getSingleton(String name) {
-        return singletonObjects.get(name);
+    public Object getSingleton(String beanName) {
+        Object bean = singletonObjects.get(beanName);
+        if (bean == null){
+            bean = earlySingletonObjects.get(beanName);
+        }
+        return bean;
     }
     public void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
