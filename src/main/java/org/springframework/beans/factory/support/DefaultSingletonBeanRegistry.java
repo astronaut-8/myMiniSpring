@@ -39,6 +39,8 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     }
     public void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
+        earlySingletonObjects.remove(beanName);
+        singletonFactories.remove(beanName);
     }
     public void registerDisposableBean(String beanName,DisposableBean bean){
         disposableBeans.put(beanName,bean);
@@ -56,8 +58,6 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         });
     }
     protected void addSingletonFactory(String beanName , ObjectFactory<?> singletonFactory){
-        singletonObjects.put(beanName , singletonFactory);
-        earlySingletonObjects.remove(beanName);
-        singletonFactories.remove(beanName);
+        singletonFactories.put(beanName , singletonFactory);
     }
 }

@@ -1,6 +1,5 @@
 package org.springframework.aop.framework.autoproxy;
 
-import cn.hutool.core.bean.BeanUtil;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.*;
@@ -10,8 +9,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
@@ -73,13 +70,16 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         return true;
     }
     protected Object wrapIfNecessary(Object bean , String beanName) {
+
         //避免死循环
         if (isInfrastructureClass(bean.getClass())){
             return null;
         }
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeanOfType(AspectJExpressionPointcutAdvisor.class).values();
+        System.out.println(advisors.size());
         try{
             for (AspectJExpressionPointcutAdvisor advisor : advisors){
+                System.out.println(advisor);
                 ClassFilter classFilter = advisor.getPointCut().getClassFilter();
                 if (classFilter.matches(bean.getClass())){
                     AdvisedSupport advisedSupport = new AdvisedSupport();

@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans">
 
 
-    <bean id="worldService" class="org.springframework.test.service.WorldServiceImpl"/>
+
 
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
@@ -18,5 +18,5 @@
     </bean>
 
     <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
-
+    <bean id="worldService" class="org.springframework.test.service.WorldServiceImpl"/>
 </beans>
