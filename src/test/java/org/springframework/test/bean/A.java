@@ -6,6 +6,16 @@ package org.springframework.test.bean;
  * {@code @msg} reserved
  */
 public class A {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private B b;
 
     public B getB() {

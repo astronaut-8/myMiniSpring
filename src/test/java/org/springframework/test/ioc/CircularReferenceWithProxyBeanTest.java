@@ -17,6 +17,6 @@ public class CircularReferenceWithProxyBeanTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:circular-reference-with-proxy-bean.xml");
         A a = applicationContext.getBean("a", A.class);
         B b = applicationContext.getBean("b", B.class);
-        System.out.println(b.getA() == a);
+        System.out.println(b.getName());
     }
 }

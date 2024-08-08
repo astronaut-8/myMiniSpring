@@ -5,9 +5,11 @@
 
     <bean id="a" class="org.springframework.test.bean.A">
         <property name="b" ref="b"/>
+        <property name="name" value="sss"/>
     </bean>
     <bean id="b" class="org.springframework.test.bean.B">
         <property name="a" ref="a"/>
+        <property name="name" value="sss"/>
     </bean>
 
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
