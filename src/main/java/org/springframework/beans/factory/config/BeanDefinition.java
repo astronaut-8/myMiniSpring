@@ -17,6 +17,7 @@ public class BeanDefinition {
     private String scope = SCOPE_SINGLETON;
     private boolean singleton = true;
     private boolean prototype = false;
+    private boolean lazyInit = false;
     private Class beanClass;
 
     private PropertyValues propertyValues;
@@ -93,5 +94,13 @@ public class BeanDefinition {
         }
         BeanDefinition that = (BeanDefinition) o;
         return beanClass.equals(that.beanClass);
+    }
+
+    public boolean isLazyInit() {
+        return lazyInit;
+    }
+
+    public void setLazyInit(boolean lazyInit) {
+        this.lazyInit = lazyInit;
     }
 }
