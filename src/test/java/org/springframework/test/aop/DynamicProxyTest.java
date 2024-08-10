@@ -32,7 +32,7 @@ public class DynamicProxyTest {
         GenericInterceptor methodInterceptor = new GenericInterceptor();
         MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* org.springframework.test.service.WorldService.explode(..))").getMethodMatcher();
         advisedSupport.setTargetSource(targetSource);
-        advisedSupport.setMethodInterceptor(methodInterceptor);
+        //advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setMethodMatcher(methodMatcher);
     }
     @Test

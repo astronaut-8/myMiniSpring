@@ -1,7 +1,6 @@
 package org.springframework.test.common;
 
-import org.springframework.aop.AnotherAfterReturningAdvice;
-
+import org.springframework.aop.AfterReturningAdvice;
 import java.lang.reflect.Method;
 
 /**
@@ -9,7 +8,7 @@ import java.lang.reflect.Method;
  * {@code @date} 2024/7/20
  * {@code @msg} reserved
  */
-public class WorldServiceAnotherAfterRunningAdvice implements AnotherAfterReturningAdvice {
+public class WorldServiceAnotherAfterRunningAdvice implements AfterReturningAdvice {
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
         System.out.println("afterRunning");
