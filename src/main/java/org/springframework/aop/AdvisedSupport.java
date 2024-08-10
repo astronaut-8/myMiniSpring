@@ -20,7 +20,7 @@ public class AdvisedSupport {
     private boolean proxyTargetClass = true;
     private TargetSource targetSource;
 
-    private MethodInterceptor methodInterceptor;//方法拦截器
+    //private MethodInterceptor methodInterceptor;//方法拦截器
     private MethodMatcher methodMatcher;
     private transient Map<Integer , List<Object>> methodCache;
     AdvisorChainFactory advisorChainFactory = new DefaultAdvisorChainFactory();
@@ -44,13 +44,13 @@ public class AdvisedSupport {
         this.targetSource = targetSource;
     }
 
-    public MethodInterceptor getMethodInterceptor() {
-        return methodInterceptor;
-    }
-
-    public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
-        this.methodInterceptor = methodInterceptor;
-    }
+//    public MethodInterceptor getMethodInterceptor() {
+//        return methodInterceptor;
+//    }
+//
+//    public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
+//        this.methodInterceptor = methodInterceptor;
+//    }
 
     public MethodMatcher getMethodMatcher() {
         return methodMatcher;
