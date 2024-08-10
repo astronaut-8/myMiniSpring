@@ -5,6 +5,7 @@ import org.springframework.beans.factory.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author abstractMoonAstronaut
@@ -14,7 +15,7 @@ import java.util.*;
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry
 , ConfigurableListableBeanFactory {
 
-    private Map<String,BeanDefinition> beanDefinitionMap = new HashMap<>();
+    private Map<String,BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
     @Override
     public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
