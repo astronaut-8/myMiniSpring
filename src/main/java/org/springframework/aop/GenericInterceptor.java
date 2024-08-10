@@ -9,16 +9,16 @@ import org.aopalliance.intercept.MethodInvocation;
  * {@code @msg} reserved
  */
 public class GenericInterceptor implements MethodInterceptor {
-    private BeforeAdvice beforeAdvice;
-    private AfterAdvice  afterAdvice;
-    private AfterReturningAdvice afterReturningAdvice;
+    private AnotherBeforeAdvice anotherBeforeAdvice;
+    private AnotherAfterAdvice anotherAfterAdvice;
+    private AnotherAfterReturningAdvice anotherAfterReturningAdvice;
     private ThrowsAdvice throwsAdvice;
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Object result = null;
         try{
-            if (beforeAdvice != null){
-                beforeAdvice.before(invocation.getMethod(),invocation.getArguments(),invocation.getThis());
+            if (anotherBeforeAdvice != null){
+                anotherBeforeAdvice.before(invocation.getMethod(),invocation.getArguments(),invocation.getThis());
             }
             result = invocation.proceed();
         }catch (Exception throwable){
@@ -26,26 +26,26 @@ public class GenericInterceptor implements MethodInterceptor {
                 throwsAdvice.throwsHandle(throwable, invocation.getMethod(), invocation.getArguments(), invocation.getThis());
             }
         }finally {
-            if (afterAdvice != null){
-                afterAdvice.after(invocation.getMethod(), invocation.getArguments(), invocation.getThis());
+            if (anotherAfterAdvice != null){
+                anotherAfterAdvice.after(invocation.getMethod(), invocation.getArguments(), invocation.getThis());
             }
         }
-        if (afterReturningAdvice != null){
-            afterReturningAdvice.afterReturning(result, invocation.getMethod(), invocation.getArguments(), invocation.getThis());
+        if (anotherAfterReturningAdvice != null){
+            anotherAfterReturningAdvice.afterReturning(result, invocation.getMethod(), invocation.getArguments(), invocation.getThis());
         }
         return result;
     }
 
-    public void setBeforeAdvice(BeforeAdvice beforeAdvice) {
-        this.beforeAdvice = beforeAdvice;
+    public void setBeforeAdvice(AnotherBeforeAdvice anotherBeforeAdvice) {
+        this.anotherBeforeAdvice = anotherBeforeAdvice;
     }
 
-    public void setAfterAdvice(AfterAdvice afterAdvice) {
-        this.afterAdvice = afterAdvice;
+    public void setAfterAdvice(AnotherAfterAdvice anotherAfterAdvice) {
+        this.anotherAfterAdvice = anotherAfterAdvice;
     }
 
-    public void setAfterReturningAdvice(AfterReturningAdvice afterReturningAdvice) {
-        this.afterReturningAdvice = afterReturningAdvice;
+    public void setAfterReturningAdvice(AnotherAfterReturningAdvice anotherAfterReturningAdvice) {
+        this.anotherAfterReturningAdvice = anotherAfterReturningAdvice;
     }
 
     public void setThrowsAdvice(ThrowsAdvice throwsAdvice) {

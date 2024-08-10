@@ -6,6 +6,7 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.aop.AdvisedSupport;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * @author abstractMoonAstronaut
@@ -37,26 +38,31 @@ public class CglibAopProxy implements AopProxy{
         }
 
         @Override
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            CglibMethodInvocation methodInvocation = new CglibMethodInvocation(advised.getTargetSource().getTarget(),method,objects,methodProxy);
-            if (advised.getMethodMatcher().matches(method,advised.getTargetSource().getTarget().getClass())){
-                //代理方法
-                return advised.getMethodInterceptor().invoke(methodInvocation);
+        public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+            //获取目标对象
+            Object target = advised.getTargetSource().getTarget();
+            Class<?> targetClass = target.getClass();
+            Object retVal = null;
+            List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method,targetClass);
+            CglibMethodInvocation methodInvocation = new CglibMethodInvocation(proxy,target,method,args,targetClass,chain,methodProxy);
+            if (chain == null || chain.isEmpty()) {
+                retVal = methodProxy.invoke(target,args);
+            } else {
+                retVal = methodInvocation.proceed();
             }
-
-            return methodInvocation.proceed();
+            return retVal;
         }
         private static class CglibMethodInvocation extends ReflectiveMethodInvocation{
             private final MethodProxy methodProxy;
 
-            public CglibMethodInvocation(Object target, Method method, Object[] arguments, MethodProxy methodProxy) {
-                super(target, method, arguments);
+            public CglibMethodInvocation(Object proxy, Object target , Method method, Object[] arguments, Class<?> targetClass , List<Object> interceptorsAndDynamicMethodMatchers , MethodProxy methodProxy) {
+                super(proxy , target, method, arguments , targetClass , interceptorsAndDynamicMethodMatchers);
                 this.methodProxy = methodProxy;
             }
 
             @Override
             public Object proceed() throws Throwable {
-                return this.methodProxy.invoke(this.target,this.arguments);
+                return super.proceed();
             }
         }
     }

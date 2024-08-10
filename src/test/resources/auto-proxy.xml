@@ -11,12 +11,20 @@
         <property name="expression" value="execution(* org.springframework.test.service.WorldService.explode(..))"/>
         <property name="advice" ref="methodInterceptor"/>
     </bean>
-
-
-    <bean id="methodInterceptor" class="org.springframework.aop.framework.adaptor.MethodBeforeAdviceInterceptor">
-        <property name="advice" ref="beforeAdvice"/>
+    <bean id="pointcutAdvisor2" class="org.springframework.aop.aspectJ.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* org.springframework.test.service.WorldService.explode(..))"/>
+        <property name="advice" ref="methodInterceptor2"/>
     </bean>
 
-    <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
+    <bean id="methodInterceptor" class="org.springframework.aop.framework.adaptor.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="anotherBeforeAdvice"/>
+    </bean>
+    <bean id="anotherBeforeAdvice" class="org.springframework.test.common.WorldServiceAnotherBeforeAdvice"/>
+
+    <bean id="methodInterceptor2" class="org.springframework.aop.framework.adaptor.AfterReturningAdviceInterceptor">
+        <property name="advice" ref="afterAdvice"/>
+    </bean>
+    <bean id="afterAdvice" class="org.springframework.test.common.WorldServiceAnotherAfterRunningAdvice"/>
+
     <bean id="worldService" class="org.springframework.test.service.WorldServiceImpl"/>
 </beans>

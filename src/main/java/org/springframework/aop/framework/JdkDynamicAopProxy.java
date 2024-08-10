@@ -1,11 +1,13 @@
 package org.springframework.aop.framework;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.AdvisedSupport;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 /**
  * @author abstractMoonAstronaut
@@ -21,13 +23,18 @@ public class JdkDynamicAopProxy implements AopProxy , InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        //判断是否需要代理
-        if (advised.getMethodMatcher().matches(method,advised.getTargetSource().getTarget().getClass())){
-            //代理方法
-            MethodInterceptor methodInterceptor = advised.getMethodInterceptor();
-            return methodInterceptor.invoke(new ReflectiveMethodInvocation(advised.getTargetSource().getTarget(),method,args));
+        Object target = advised.getTargetSource().getTarget();
+        Class<?> targetClass = target.getClass();
+        Object retVal = null;
+        //获取拦截链
+        List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method,targetClass);
+        if (chain == null || chain.isEmpty()) {
+            return method.invoke(target,args);
+        }else {
+            MethodInvocation invocation = new ReflectiveMethodInvocation(proxy , target , method , args , targetClass , chain);
+            retVal = invocation.proceed();
         }
-        return method.invoke(advised.getTargetSource().getTarget(),args);
+        return retVal;
     }
 
     @Override

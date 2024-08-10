@@ -16,9 +16,9 @@
 
 
     <bean id="methodInterceptor" class="org.springframework.aop.framework.adaptor.MethodBeforeAdviceInterceptor">
-        <property name="advice" ref="beforeAdvice"/>
+        <property name="advice" ref="anotherBeforeAdvice"/>
     </bean>
 
-    <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
+    <bean id="anotherBeforeAdvice" class="org.springframework.test.common.WorldServiceAnotherBeforeAdvice"/>
 
 </beans>

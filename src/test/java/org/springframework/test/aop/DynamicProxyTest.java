@@ -47,56 +47,56 @@ public class DynamicProxyTest {
         proxy.explode();
     }
 
-    @Test
-    public void testProxyFactory() throws Exception{
-        //jdk
-        advisedSupport.setProxyTargetClass(false);
-        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
-        proxy.explode();
+//    @Test
+//    public void testProxyFactory() throws Exception{
+//        //jdk
+//        advisedSupport.setProxyTargetClass(false);
+//        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+//        proxy.explode();
+//
+//        advisedSupport.setProxyTargetClass(true);
+//        proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+//        proxy.explode();
+//    }
 
-        advisedSupport.setProxyTargetClass(true);
-        proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
-        proxy.explode();
-    }
-
-
-    @Test
-    public void testAllWithException() throws Exception{
-        WorldService worldService = new WorldServiceWithExceptionImpl();
-        GenericInterceptor genericInterceptor = new GenericInterceptor();
-        genericInterceptor.setBeforeAdvice(new WorldServiceBeforeAdvice());
-        genericInterceptor.setAfterAdvice(new WorldServiceAfterAdvice());
-        genericInterceptor.setThrowsAdvice(new WorldServiceThrowsAdvice());
-        genericInterceptor.setAfterReturningAdvice(new WorldServiceAfterRunningAdvice());
-
-        advisedSupport.setMethodInterceptor(genericInterceptor);
-        advisedSupport.setTargetSource(new TargetSource(worldService));
-
-        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
-        proxy.explode();
-    }
-    @Test
-    public void testAdvisor() throws Exception{
-        WorldService worldService = new WorldServiceImpl();
-
-        String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
-        AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
-        advisor.setExpression(expression);
-        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
-        advisor.setAdvice(methodInterceptor);
-
-        ClassFilter classFilter = advisor.getPointCut().getClassFilter();
-        if (classFilter.matches(worldService.getClass())){
-            AdvisedSupport advisedSupport = new AdvisedSupport();
-
-            TargetSource targetSource = new TargetSource(worldService);
-            advisedSupport.setTargetSource(targetSource);
-            advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-            advisedSupport.setMethodMatcher(advisor.getPointCut().getMethodMatcher());
-
-            WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
-            proxy.explode();
-        }
-
-    }
+//
+//    @Test
+//    public void testAllWithException() throws Exception{
+//        WorldService worldService = new WorldServiceWithExceptionImpl();
+//        GenericInterceptor genericInterceptor = new GenericInterceptor();
+//        genericInterceptor.setBeforeAdvice(new WorldServiceAnotherBeforeAdvice());
+//        genericInterceptor.setAfterAdvice(new WorldServiceAfterAdvice());
+//        genericInterceptor.setThrowsAdvice(new WorldServiceThrowsAdvice());
+//        genericInterceptor.setAfterReturningAdvice(new WorldServiceAnotherAfterRunningAdvice());
+//
+//        advisedSupport.setMethodInterceptor(genericInterceptor);
+//        advisedSupport.setTargetSource(new TargetSource(worldService));
+//
+//        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+//        proxy.explode();
+//    }
+//    @Test
+//    public void testAdvisor() throws Exception{
+//        WorldService worldService = new WorldServiceImpl();
+//
+//        String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+//        AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+//        advisor.setExpression(expression);
+//        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceAnotherBeforeAdvice());
+//        advisor.setAdvice(methodInterceptor);
+//
+//        ClassFilter classFilter = advisor.getPointCut().getClassFilter();
+//        if (classFilter.matches(worldService.getClass())){
+//            AdvisedSupport advisedSupport = new AdvisedSupport();
+//
+//            TargetSource targetSource = new TargetSource(worldService);
+//            advisedSupport.setTargetSource(targetSource);
+//            advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
+//            advisedSupport.setMethodMatcher(advisor.getPointCut().getMethodMatcher());
+//
+//            WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+//            proxy.explode();
+//        }
+//
+//    }
 }

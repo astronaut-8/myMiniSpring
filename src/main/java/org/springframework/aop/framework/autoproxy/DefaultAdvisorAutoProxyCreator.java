@@ -77,21 +77,18 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         }
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeanOfType(AspectJExpressionPointcutAdvisor.class).values();
         try{
+            ProxyFactory proxyFactory = new ProxyFactory();
             for (AspectJExpressionPointcutAdvisor advisor : advisors){
                 ClassFilter classFilter = advisor.getPointCut().getClassFilter();
                 if (classFilter.matches(bean.getClass())){
-                    AdvisedSupport advisedSupport = new AdvisedSupport();
-
-//                    BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-//                    Object bean = beanFactory.getInstantiationStrategy().instantiate(beanDefinition);
                     TargetSource targetSource = new TargetSource(bean);
-                    advisedSupport.setTargetSource(targetSource);
-                    advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-                    advisedSupport.setMethodMatcher(advisor.getPointCut().getMethodMatcher());
-
-                    //返回代理对象
-                    return new ProxyFactory(advisedSupport).getProxy();
+                    proxyFactory.setTargetSource(targetSource);
+                    proxyFactory.addAdvisor(advisor);
+                    proxyFactory.setMethodMatcher(advisor.getPointCut().getMethodMatcher());
                 }
+            }
+            if (!proxyFactory.getAdvisors().isEmpty()) {
+                return proxyFactory.getProxy();
             }
         }catch (Exception e){
             throw new BeansException("error create proxy bean for " + beanName,e);

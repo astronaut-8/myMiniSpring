@@ -7,20 +7,19 @@ import org.springframework.aop.AdvisedSupport;
  * {@code @date} 2024/7/20
  * {@code @msg} reserved
  */
-public class ProxyFactory {
-    private AdvisedSupport advisedSupport;
+public class ProxyFactory extends AdvisedSupport {
 
-    public ProxyFactory(AdvisedSupport advisedSupport) {
-        this.advisedSupport = advisedSupport;
+    public ProxyFactory() {
     }
+
     public Object getProxy(){
         return createProxy().getProxy();
     }
 
     private AopProxy createProxy(){
-        if (advisedSupport.isProxyTargetClass()){
-            return new CglibAopProxy(advisedSupport);
+        if (this.isProxyTargetClass() || this.getTargetSource().getTargetClass().length == 0){
+            return new CglibAopProxy(this);
         }
-        return new JdkDynamicAopProxy(advisedSupport);
+        return new JdkDynamicAopProxy(this);
     }
 }
